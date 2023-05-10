@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StateMachine
+namespace StateMachine.CommandLine
 {
-	public class BattleStateDto
+	public class MyCustomDto
 	{
         public int BattleId { get; set; }
 		public int AttackerMonsterId { get; set; }

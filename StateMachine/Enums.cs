@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StateMachine
 {
-	public enum ProcessState
+	public enum State
 	{
 		Inactive,
 		Active,

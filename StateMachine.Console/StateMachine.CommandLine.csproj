@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>state_machine_poc</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>StateMachine.CommandLine.Program</StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StateMachine\StateMachine.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -2,26 +2,25 @@
 {
 	public class StateMachine<TEventData>
 	{
-		public Dictionary<StateTransition<TEventData>, ProcessState> Transitions = new();
-		public ProcessState CurrentState { get; private set; }
+		public Dictionary<Transition<TEventData>, State> Transitions = new();
+		public State CurrentState { get; private set; }
 
 		public StateMachine()
 		{
-			CurrentState = ProcessState.Inactive;
+			CurrentState = State.Inactive;
 		}
 
-		public ProcessState GetNext(Event command, TEventData parameter)
+		public State GetNext(Event command, TEventData parameter)
 		{
 			var transitionKey = Transitions.Keys.Where(t => t.CurrentState == CurrentState && t.Command == command).SingleOrDefault();
 			
 			if (transitionKey is null)
 				throw new Exception("Invalid transition: " + CurrentState + " -> " + command);
 
-			transitionKey.MethodToExecute(parameter);
+			transitionKey.Action(parameter);
 			CurrentState = Transitions[transitionKey];
 			
 			return CurrentState;
 		}
-
 	}
 }
