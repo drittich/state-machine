@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace state_machine_poc
+namespace StateMachine
 {
 	internal class Program
 	{

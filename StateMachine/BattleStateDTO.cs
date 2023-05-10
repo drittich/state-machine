@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace state_machine_poc
+namespace StateMachine
 {
 	public class BattleStateDto
 	{
