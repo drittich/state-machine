@@ -5,6 +5,28 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>state_machine_poc</RootNamespace>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>drittich.$(AssemblyName)</PackageId>
+    <Title>A simple convention-based finite state machine that lets you pass event data through to your transition actions.</Title>
+    <Authors>drittich</Authors>
+    <Company>drittich</Company>
+    <Description>A simple convention-based finite state machine that lets you pass event data through to your transition actions.</Description>
+    <PackageProjectUrl>https://github.com/drittich/state-machine</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/drittich/state-machine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>statemachine,state-machine,fsm</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <AnalysisLevel>none</AnalysisLevel>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
