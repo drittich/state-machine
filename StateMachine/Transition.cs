@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StateMachine
 {
-	public class Transition<TEventData, TStateEnum, TEventEnum> 
+	public class Transition<TStateEnum, TEventEnum, TEventData>
 		where TStateEnum : Enum
 		where TEventEnum : Enum
 	{
@@ -20,7 +20,7 @@ namespace StateMachine
 
 		public override bool Equals(object? obj)
 		{
-			return obj is Transition<TEventData, TStateEnum, TEventEnum> transition &&
+			return obj is Transition<TStateEnum, TEventEnum, TEventData> transition &&
 				   EqualityComparer<TStateEnum>.Default.Equals(CurrentState, transition.CurrentState) &&
 				   EqualityComparer<TEventEnum>.Default.Equals(Event, transition.Event) &&
 				   EqualityComparer<Action<TEventData>>.Default.Equals(Action, transition.Action);

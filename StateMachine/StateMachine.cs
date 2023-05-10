@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace StateMachine
 {
-	public class StateMachine<TEventData, TStateEnum, TEventEnum> 
+	public class StateMachine<TStateEnum, TEventEnum, TEventData> 
 		where TStateEnum: Enum
 		where TEventEnum : Enum
 	{
-		public Dictionary<Transition<TEventData, TStateEnum, TEventEnum>, TStateEnum> Transitions = new Dictionary<Transition<TEventData, TStateEnum, TEventEnum>, TStateEnum>();
+		public Dictionary<Transition<TStateEnum, TEventEnum, TEventData>, TStateEnum> Transitions = new Dictionary<Transition<TStateEnum, TEventEnum, TEventData>, TStateEnum>();
 		public TStateEnum CurrentState { get; private set; }
 
 		public StateMachine()

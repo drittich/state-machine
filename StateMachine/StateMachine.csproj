@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>drittich.$(AssemblyName)</PackageId>
+	<Version>1.0.1</Version>
     <Title>A simple convention-based finite state machine that lets you pass event data through to your transition actions.</Title>
     <Authors>drittich</Authors>
     <Company>drittich</Company>
@@ -20,6 +21,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

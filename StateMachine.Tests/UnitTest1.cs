@@ -5,10 +5,10 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldDoADefinedTransition()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
-			stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
+			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto { Prop1 = 1 };
@@ -20,10 +20,10 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldAllowAnEmptyDtoObject()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
-			stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
+			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto();
@@ -35,23 +35,23 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldNotAllowMultipleEndStatesForSameTransition()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
-			stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
+			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
 			};
 
 			Assert.Throws<ArgumentException>(() =>
-			stateMachine.Transitions.Add(new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState));
+			stateMachine.Transitions.Add(new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState));
 		}
 
 		[Fact]
 		public void ShouldThrowIfInvalidTransition()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
-			stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
+			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto();
@@ -62,11 +62,11 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldDoMultipleDefinedTransitions()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
-			stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
+			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState },
-				{ new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.SomeOtherState, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState },
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.SomeOtherState, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto { Prop1 = 1 };
@@ -81,7 +81,7 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldStartOutWithInitialState()
 		{
-			var stateMachine = new StateMachine<MyCustomDto, MyStates, MyEvents>();
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 
 			// validate that initial (first) state is set
 			Assert.Equal(MyStates.Initial, stateMachine.CurrentState);
@@ -91,14 +91,14 @@ namespace StateMachine.Tests
 		[Fact]
 		public void ShouldThrowIfNotEnoughStates()
 		{
-			Assert.Throws<ArgumentException>(() => new StateMachine<MyCustomDto, NotEnoughStates, MyEvents>());
+			Assert.Throws<ArgumentException>(() => new StateMachine<NotEnoughStates, MyEvents, MyCustomDto>());
 		}
 
 		// Should throw if not enough events
 		[Fact]
 		public void ShouldThrowIfNoEvents()
 		{
-			Assert.Throws<ArgumentException>(() => new StateMachine<MyCustomDto, MyStates, NotEnoughEvents>());
+			Assert.Throws<ArgumentException>(() => new StateMachine<MyStates, NotEnoughEvents, MyCustomDto>());
 		}
 
 		private void SomeMethodToExecute(MyCustomDto? obj) { }
