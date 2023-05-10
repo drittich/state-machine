@@ -1,10 +1,14 @@
-﻿namespace StateMachine
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace StateMachine
 {
 	public class StateMachine<TEventData, TStateEnum, TEventEnum> 
 		where TStateEnum: Enum
 		where TEventEnum : Enum
 	{
-		public Dictionary<Transition<TEventData, TStateEnum, TEventEnum>, TStateEnum> Transitions = new();
+		public Dictionary<Transition<TEventData, TStateEnum, TEventEnum>, TStateEnum> Transitions = new Dictionary<Transition<TEventData, TStateEnum, TEventEnum>, TStateEnum>();
 		public TStateEnum CurrentState { get; private set; }
 
 		public StateMachine()
@@ -39,4 +43,3 @@
 		}
 	}
 }
-

@@ -1,4 +1,7 @@
-﻿namespace StateMachine
+﻿using System;
+using System.Collections.Generic;
+
+namespace StateMachine
 {
 	public class Transition<TEventData, TStateEnum, TEventEnum> 
 		where TStateEnum : Enum
