@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace state_machine_poc
 {
-	public class StateTransition
+	public class StateTransition<T>
 	{
 		public ProcessState CurrentState { get; }
 		public Event Command { get; }
-		public Action<BattleStateDto> MethodToExecute { get; }
+		public Action<T> MethodToExecute { get; }
 		public ProcessState Inactive { get; }
 		public Event Exit { get; }
-		public Action<BattleStateDto> SomeMethodToExecute { get; }
+		//public Action<BattleStateDto> SomeMethodToExecute { get; }
 
-		public StateTransition(ProcessState currentState, Event command, Action<BattleStateDto> methodToExecute)
+		public StateTransition(ProcessState currentState, Event command, Action<T> methodToExecute)
 		{
 			CurrentState = currentState;
 			Command = command;
@@ -29,7 +29,7 @@ namespace state_machine_poc
 
 		public override bool Equals(object obj)
 		{
-			StateTransition other = obj as StateTransition;
+			StateTransition<T> other = obj as StateTransition<T>;
 			return other != null && this.CurrentState == other.CurrentState && this.Command == other.Command;
 		}
 	}

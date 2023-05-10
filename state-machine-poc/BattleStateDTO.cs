@@ -8,7 +8,7 @@ namespace state_machine_poc
 {
 	public class BattleStateDto
 	{
-        public int BattleID { get; set; }
+        public int BattleId { get; set; }
 		public int AttackerMonsterId { get; set; }
 
 		public int AttackerPlayerId { get; set; }
