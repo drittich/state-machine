@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>drittich.$(AssemblyName)</PackageId>
-	<Version>1.0.1</Version>
+	<Version>1.0.3</Version>
     <Title>A simple convention-based finite state machine that lets you pass event data through to your transition actions.</Title>
     <Authors>drittich</Authors>
     <Company>drittich</Company>
@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/drittich/state-machine</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>statemachine,state-machine,fsm</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Switched to async GetNext method</PackageReleaseNotes>
     <AnalysisLevel>none</AnalysisLevel>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>

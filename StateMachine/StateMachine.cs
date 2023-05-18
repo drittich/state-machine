@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace StateMachine
+namespace drittich.StateMachine
 {
 	public class StateMachine<TStateEnum, TEventEnum, TEventData> 
 		where TStateEnum: Enum
@@ -28,7 +29,7 @@ namespace StateMachine
 			CurrentState = firstStateEnumValue;
 		}
 
-		public TStateEnum GetNext(TEventEnum evt, TEventData parameter)
+		public async Task<TStateEnum> GetNextAsync(TEventEnum evt, TEventData parameter)
 		{
 			var definedTransition = Transitions.Keys
 				.SingleOrDefault(t => Convert.ToInt32(t.CurrentState) == Convert.ToInt32(CurrentState) && Convert.ToInt32(t.Event) == Convert.ToInt32(evt));
@@ -36,7 +37,7 @@ namespace StateMachine
 			if (definedTransition is null)
 				throw new InvalidOperationException($"Invalid transition: {CurrentState} -> {evt}");
 
-			definedTransition.Action(parameter);
+			await definedTransition.Action(parameter);
 			CurrentState = Transitions[definedTransition];
 
 			return CurrentState;

@@ -1,34 +1,34 @@
-namespace StateMachine.Tests
+namespace drittich.StateMachine.Tests
 {
 	public class UnitTest1
 	{
 		[Fact]
-		public void ShouldDoADefinedTransition()
+		public async Task ShouldDoADefinedTransitionAsync()
 		{
 			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto { Prop1 = 1 };
 
-			var resultingState = stateMachine.GetNext(MyEvents.DoOtherStuff, bs1);
+			var resultingState = await stateMachine.GetNextAsync(MyEvents.DoOtherStuff, bs1);
 			Assert.Equal(MyStates.Complete, resultingState);
 		}
 
 		[Fact]
-		public void ShouldAllowAnEmptyDtoObject()
+		public async Task ShouldAllowAnEmptyDtoObjectAsync()
 		{
 			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto();
 
-			var resultingState = stateMachine.GetNext(MyEvents.DoOtherStuff, bs1);
+			var resultingState = await stateMachine.GetNextAsync(MyEvents.DoOtherStuff, bs1);
 			Assert.Equal(MyStates.Complete, resultingState);
 		}
 
@@ -38,42 +38,42 @@ namespace StateMachine.Tests
 			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.Complete }
 			};
 
 			Assert.Throws<ArgumentException>(() =>
-			stateMachine.Transitions.Add(new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState));
+			stateMachine.Transitions.Add(new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.SomeOtherState));
 		}
 
 		[Fact]
-		public void ShouldThrowIfInvalidTransition()
+		public async Task ShouldThrowIfInvalidTransitionAsync()
 		{
 			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto();
 
-			Assert.Throws<InvalidOperationException>(() => stateMachine.GetNext(MyEvents.NeverDefinedInTransition, bs1));
+			await Assert.ThrowsAsync<InvalidOperationException>(() => stateMachine.GetNextAsync(MyEvents.NeverDefinedInTransition, bs1));
 		}
 
 		[Fact]
-		public void ShouldDoMultipleDefinedTransitions()
+		public async Task ShouldDoMultipleDefinedTransitionsAsync()
 		{
 			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>();
 			stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 			{
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.SomeOtherState },
-				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.SomeOtherState, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.SomeOtherState },
+				{ new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.SomeOtherState, MyEvents.DoOtherStuff, SomeMethodToExecuteAsync), MyStates.Complete }
 			};
 
 			var bs1 = new MyCustomDto { Prop1 = 1 };
 
-			var resultingState = stateMachine.GetNext(MyEvents.DoOtherStuff, bs1);
+			var resultingState = await stateMachine.GetNextAsync(MyEvents.DoOtherStuff, bs1);
 			Assert.Equal(MyStates.SomeOtherState, resultingState);
-			var resultingState2 = stateMachine.GetNext(MyEvents.DoOtherStuff, bs1);
+			var resultingState2 = await stateMachine.GetNextAsync(MyEvents.DoOtherStuff, bs1);
 			Assert.Equal(MyStates.Complete, resultingState2);
 		}
 
@@ -101,7 +101,10 @@ namespace StateMachine.Tests
 			Assert.Throws<ArgumentException>(() => new StateMachine<MyStates, NotEnoughEvents, MyCustomDto>());
 		}
 
-		private void SomeMethodToExecute(MyCustomDto? obj) { }
+		private async Task SomeMethodToExecuteAsync(MyCustomDto? obj) { 
+			// add a dummy await operation
+			await Task.Delay(TimeSpan.FromMicroseconds(1));
+		}
 	}
 
 	public class MyCustomDto

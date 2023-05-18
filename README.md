@@ -18,34 +18,34 @@ enum MyStates
 
 enum MyEvents
 {
-    DoStuff,
-    DoOtherStuff,
-    SomeOtherRandomStuff
+    SomethingHappened,
+    SomethingElseHappened,
+    SomeOtherRandomEvent
 }
 
-public class MyDTO {
+public class MyDto {
     public int Prop1 { get; set; }    
 }
   
 ...
   
 // create the state machine
-var sm = new StateMachine(MyDTO, MyStates, MyEvents>();
+var sm = new StateMachine(MyStates, MyEvents, MyDto>();
 
 // specify the allowed transitions
-stateMachine.Transitions = new Dictionary<Transition<MyCustomDto, MyStates, MyEvents>, MyStates>
+stateMachine.Transitions = new Dictionary<Transition<MyStates, MyEvents, MyCustomDto>, MyStates>
 {
-    { new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.Initial, MyEvents.DoStuff, SomeMethodToExecute), MyStates.SomeState },
-    { new Transition<MyCustomDto, MyStates, MyEvents>(MyStates.SomeState, MyEvents.DoOtherStuff, SomeMethodToExecute), MyStates.Complete }
+    { new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, MyEvents.SomethingHappened, SomeMethodToExecuteAsync), MyStates.SomeState },
+    { new Transition<MyStates, MyEvents, MyCustomDto>(MyStates.SomeState, MyEvents.SomethingElseHappened, SomeMethodToExecuteAsync), MyStates.Complete }
 };
 
-var data = new MyDTO { Prop1 = 1 };
+var data = new MyDto { Prop1 = 1 };
 
 // Execute a transition.
-// This will transition the state as per the specification above, and call method SomeMethodToExecute,
+// This will transition the state as per the specification above, and call method SomeMethodToExecuteAsync,
 // passing the parameter `data` to it.
-var resultingState = sm.GetNext(MyEvents.DoStuff, data);  // new state is `MyStates.SomeState`
+var resultingState = await sm.GetNextAsync(MyEvents.SomethingHappened, data);  // new state is `MyStates.SomeState`
 
 // Invalid transitions will result in an exception
-var resultingState2 = sm.GetNext(MyEvents.SomeOtherRandomStuff, data);  // since no transition defined for `SomeOtherRandomStuff`, wil throw
+var resultingState2 = sm.GetNextAsync(MyEvents.SomeOtherRandomEvent, data);  // since no transition defined for `SomeOtherRandomEvent`, wil throw
 ```
