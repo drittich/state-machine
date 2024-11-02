@@ -7,7 +7,7 @@ A simple, extensible finite state machine that allows you to define states, even
 
 ## Installation
 
-The StateMachine library is available on NuGet. You can install it using the Package Manager Console:
+The StateMachine library is available on [NuGet](https://www.nuget.org/packages/drittich.StateMachine). You can install it using the Package Manager Console:
 
 ```bash
 Install-Package drittich.StateMachine
