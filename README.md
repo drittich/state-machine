@@ -5,6 +5,22 @@
 
 A simple, extensible finite state machine that allows you to define states, events, transitions, and pass event data through to your transition actions.
 
+## Installation
+
+The StateMachine library is available on NuGet. You can install it using the Package Manager Console:
+
+```bash
+Install-Package drittich.StateMachine
+```
+
+Or using the .NET CLI:
+
+```bash
+dotnet add package drittich.StateMachine
+```
+
+This will install the library and its dependencies.
+
 ## Example Usage
 
 The `StateMachine` class lets you define your own states, events, transitions, and a data transfer object (DTO) to pass data with events. This data can then be provided to the action that runs when a transition occurs.
