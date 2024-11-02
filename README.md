@@ -1,5 +1,8 @@
 # State Machine
 
+[![.NET 8 - Build](https://github.com/drittich/state-machine/actions/workflows/build.yml/badge.svg)](https://github.com/drittich/state-machine/actions/workflows/build.yml)
+[![.NET 8 - Tests](https://github.com/drittich/state-machine/actions/workflows/tests.yml/badge.svg)](https://github.com/drittich/state-machine/actions/workflows/tests.yml)
+
 A simple, extensible finite state machine that allows you to define states, events, transitions, and pass event data through to your transition actions.
 
 ## Example Usage
