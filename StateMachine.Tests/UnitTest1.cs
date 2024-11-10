@@ -701,6 +701,39 @@ namespace drittich.StateMachine.Tests
 		}
 
 		/// <summary>
+		/// Ensures that actions associated with transitions are executed in the correct order.
+		/// </summary>
+		[Fact]
+		public async Task ShouldExecuteActionsInOrderWithSimpleAddTransitionMethod()
+		{
+			// Arrange
+			var logger = new NullLogger<StateMachine<MyStates, MyEvents, MyCustomDto>>();
+			var callOrder = new List<string>();
+
+			var stateMachine = new StateMachine<MyStates, MyEvents, MyCustomDto>(MyStates.Initial, logger);
+			stateMachine.AddTransition(MyStates.Initial, MyEvents.DoStuff, MyStates.SomeState, async (data, cancellationToken) =>
+			{
+				callOrder.Add("FirstAction");
+				await Task.Delay(1, cancellationToken);
+			});
+
+			stateMachine.AddTransition(MyStates.SomeState, MyEvents.DoOtherStuff, MyStates.Complete, async (data, cancellationToken) =>
+			{
+				callOrder.Add("SecondAction");
+				await Task.Delay(1, cancellationToken);
+			});
+
+			var dto = new MyCustomDto { Prop1 = 1 };
+
+			// Act
+			await stateMachine.GetNextAsync(MyEvents.DoStuff, dto);
+			await stateMachine.GetNextAsync(MyEvents.DoOtherStuff, dto);
+
+			// Assert
+			Assert.Equal(new[] { "FirstAction", "SecondAction" }, callOrder);
+		}
+
+		/// <summary>
 		/// Dummy asynchronous operation used as the action delegate in several tests.
 		/// </summary>
 		private async Task SomeMethodToExecuteAsync(MyCustomDto obj, CancellationToken cancellationToken)
@@ -715,7 +748,7 @@ namespace drittich.StateMachine.Tests
 	public class MyCustomDto
 	{
 		public int Prop1 { get; set; }
-		public string Prop2 { get; set; }
+		public string Prop2 { get; set; } = string.Empty;
 	}
 
 	/// <summary>

@@ -65,6 +65,19 @@ namespace drittich.StateMachine
 			_transitions.Add(key, transition);
 		}
 
+		// New simplified AddTransition method
+		public void AddTransition(
+			TStateEnum currentState,
+			TEventEnum evt,
+			TStateEnum nextState,
+			Func<TEventData, CancellationToken, Task> action,
+			Func<TEventData, bool>? guard = null)
+		{
+			var transition = new Transition<TStateEnum, TEventEnum, TEventData>(currentState, evt, nextState, action, guard);
+			AddTransition(transition);
+		}
+
+
 		/// <summary>
 		/// Handles an event and transitions to the next state if possible.
 		/// </summary>

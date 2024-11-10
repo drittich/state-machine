@@ -54,7 +54,7 @@ namespace drittich.StateMachine
 			TEventEnum evt,
 			TStateEnum nextState,
 			Func<TEventData, CancellationToken, Task> action,
-			Func<TEventData, bool> guard = null)
+			Func<TEventData, bool>? guard = null)
 		{
 			CurrentState = currentState;
 			Event = evt;
