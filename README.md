@@ -63,17 +63,15 @@ public class MyDto
 ### Initialize the State Machine
 
 ```csharp
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+// Add transitions to the state machine
+sm.AddTransition(MyStates.Initial, MyEvents.SomethingHappened, MyStates.SomeState, SomeMethodToExecuteAsync);
+sm.AddTransition(MyStates.SomeState, MyEvents.SomethingElseHappened, MyStates.Complete, SomeOtherMethodToExecuteAsync);
 
-// Create a logger (use NullLogger if you don't need logging)
-ILogger<StateMachine<MyStates, MyEvents, MyDto>> logger = new NullLogger<StateMachine<MyStates, MyEvents, MyDto>>();
-
-// Initialize the state machine with the initial state
-var sm = new StateMachine<MyStates, MyEvents, MyDto>(MyStates.Initial, logger);
 ```
 
 ### Define the Transitions
+
+With the simplified AddTransition method, you can now add transitions directly without needing to create Transition objects explicitly:
 
 ```csharp
 // Add transitions to the state machine
@@ -153,13 +151,14 @@ catch (InvalidTransitionException ex)
 You can add guard conditions to transitions to control whether the transition should occur based on the event data.
 
 ```csharp
-sm.AddTransition(new Transition<MyStates, MyEvents, MyDto>(
-    currentState: MyStates.SomeState,
-    evt: MyEvents.SomeOtherRandomEvent,
-    nextState: MyStates.Complete,
-    action: SomeOtherMethodToExecuteAsync,
+sm.AddTransition(
+    MyStates.SomeState,
+    MyEvents.SomeOtherRandomEvent,
+    MyStates.Complete,
+    SomeOtherMethodToExecuteAsync,
     guard: data => data.Prop1 > 0
-));
+);
+
 ```
 
 If the guard condition returns false, a GuardConditionFailedException is thrown, and the transition does not occur.
@@ -243,19 +242,9 @@ class Program
         var sm = new StateMachine<MyStates, MyEvents, MyDto>(MyStates.Initial, logger);
 
         // Define transitions
-        sm.AddTransition(new Transition<MyStates, MyEvents, MyDto>(
-            currentState: MyStates.Initial,
-            evt: MyEvents.SomethingHappened,
-            nextState: MyStates.SomeState,
-            action: SomeMethodToExecuteAsync
-        ));
+        sm.AddTransition(MyStates.Initial, MyEvents.SomethingHappened, MyStates.SomeState, SomeMethodToExecuteAsync);
 
-        sm.AddTransition(new Transition<MyStates, MyEvents, MyDto>(
-            currentState: MyStates.SomeState,
-            evt: MyEvents.SomethingElseHappened,
-            nextState: MyStates.Complete,
-            action: SomeOtherMethodToExecuteAsync
-        ));
+        sm.AddTransition(MyStates.SomeState, MyEvents.SomethingElseHappened, MyStates.Complete, SomeOtherMethodToExecuteAsync);
 
         // Event data
         var data = new MyDto { Prop1 = 1 };
@@ -291,6 +280,7 @@ class Program
         Console.WriteLine("Executed SomeOtherMethodToExecuteAsync");
     }
 }
+
 ```
 
 ## Installation
