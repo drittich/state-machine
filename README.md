@@ -63,10 +63,14 @@ public class MyDto
 ### Initialize the State Machine
 
 ```csharp
-// Add transitions to the state machine
-sm.AddTransition(MyStates.Initial, MyEvents.SomethingHappened, MyStates.SomeState, SomeMethodToExecuteAsync);
-sm.AddTransition(MyStates.SomeState, MyEvents.SomethingElseHappened, MyStates.Complete, SomeOtherMethodToExecuteAsync);
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
+// Create a logger (use NullLogger if you don't need logging)
+ILogger<StateMachine<MyStates, MyEvents, MyDto>> logger = new NullLogger<StateMachine<MyStates, MyEvents, MyDto>>();
+
+// Initialize the state machine with the initial state
+var sm = new StateMachine<MyStates, MyEvents, MyDto>(MyStates.Initial, logger);
 ```
 
 ### Define the Transitions
@@ -75,19 +79,8 @@ With the simplified AddTransition method, you can now add transitions directly w
 
 ```csharp
 // Add transitions to the state machine
-sm.AddTransition(new Transition<MyStates, MyEvents, MyDto>(
-    currentState: MyStates.Initial,
-    evt: MyEvents.SomethingHappened,
-    nextState: MyStates.SomeState,
-    action: SomeMethodToExecuteAsync
-));
-
-sm.AddTransition(new Transition<MyStates, MyEvents, MyDto>(
-    currentState: MyStates.SomeState,
-    evt: MyEvents.SomethingElseHappened,
-    nextState: MyStates.Complete,
-    action: SomeOtherMethodToExecuteAsync
-));
+sm.AddTransition(MyStates.Initial, MyEvents.SomethingHappened, MyStates.SomeState, SomeMethodToExecuteAsync);
+sm.AddTransition(MyStates.SomeState, MyEvents.SomethingElseHappened, MyStates.Complete, SomeOtherMethodToExecuteAsync);
 ```
 
 ### Define the Action Methods
