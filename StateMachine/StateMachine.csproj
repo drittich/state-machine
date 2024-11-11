@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>drittich.$(AssemblyName)</PackageId>
-	<Version>1.2.0</Version>
+	<Version>1.2.1</Version>
     <Title>A simple convention-based finite state machine that lets you pass event data through to your transition actions.</Title>
     <Authors>drittich</Authors>
     <Company>drittich</Company>
@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/drittich/state-machine</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>statemachine,state-machine,fsm</PackageTags>
-    <PackageReleaseNotes>Has a new, simpler AddTransition method</PackageReleaseNotes>
+    <PackageReleaseNotes>Execute the action outside the transition lock</PackageReleaseNotes>
     <AnalysisLevel>none</AnalysisLevel>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>

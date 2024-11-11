@@ -87,13 +87,14 @@ namespace drittich.StateMachine
 		/// <returns>The new state after the transition.</returns>
 		public async Task<TStateEnum> GetNextAsync(TEventEnum evt, TEventData parameter, CancellationToken cancellationToken = default)
 		{
-			await _stateLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+			Transition<TStateEnum, TEventEnum, TEventData> transition;
 
+			// Acquire the lock
+			await _stateLock.WaitAsync(cancellationToken).ConfigureAwait(false);
 			try
 			{
 				var key = (CurrentState, evt);
-
-				if (!_transitions.TryGetValue(key, out var transition))
+				if (!_transitions.TryGetValue(key, out transition))
 				{
 					_logger.LogWarning("No transition defined from state {CurrentState} on event {Event}.", CurrentState, evt);
 					throw new InvalidTransitionException($"No transition defined from state {CurrentState} on event {evt}.");
@@ -107,16 +108,18 @@ namespace drittich.StateMachine
 
 				_logger.LogInformation("Transitioning from {CurrentState} to {NextState} on event {Event}.", CurrentState, transition.NextState, evt);
 
-				await transition.Action(parameter, cancellationToken).ConfigureAwait(false);
-
+				// Update the state before releasing the lock
 				CurrentState = transition.NextState;
-
-				return CurrentState;
 			}
 			finally
 			{
 				_stateLock.Release();
 			}
+
+			// Execute the action outside the lock
+			await transition.Action(parameter, cancellationToken).ConfigureAwait(false);
+
+			return CurrentState;
 		}
 	}
 }
